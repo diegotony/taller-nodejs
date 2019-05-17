@@ -2,21 +2,34 @@ const express = require("express");
 const app = express();
 const User = require('../models/user');
 
-// app.get("/usuario", (req, res) => {
-//     res.json({
-//         ok: true,
-//         msg: "All ok"
-//     });
-// });
 
-
+app.get('/user', (req, res) => {
+    User.find({
+        state: true
+    }, (err, usuarioDB) => {
+        if (err) {
+            return res.status.json({
+                ok: true,
+                err
+            })
+        }
+        res.status(200).json({
+            ok: true,
+            usuarioDB
+        });
+    }).populate('Rol');
+});
 
 app.post("/user", (req, res) => {
     let body = req.body;
     let userGuardar = new User({
-        nombre: body.nombre,
-        apellido: body.apellido,
-        edad: body.edad
+        name: body.name,
+        lastName: body.lastName,
+        email: body.email,
+        userName: body.userName,
+        password: body.password,
+        age: body.age,
+        rol: body.rol
     });
 
     userGuardar.save((err, usuarioDB) => {
@@ -38,5 +51,71 @@ app.post("/user", (req, res) => {
             data: usuarioDB
         })
     });
+});
+
+
+app.put('/user/:id', (req, res) => {
+    let id = req.params.id
+
+    let body = req.body;
+
+    let usuarioPorEditar = {
+        nombre: body.nombre,
+        apellido: body.apellido,
+        edad: body.edad
+    }
+
+    User.findByIdAndUpdate(id, usuarioPorEditar, {
+        new: true,
+        runValidators: true
+    }, (err, usuarioDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                usuarioDB
+            })
+        }
+        res.status(200).json({
+            ok: true,
+            usuarioDB
+        })
+
+    })
+})
+
+app.delete('/user:id', (req, res) => {
+    let id = req.params.id
+    let usarioState = {
+        state: false
+    }
+
+    User.findByIdAndUpdate(id, usarioState, {
+        new: true,
+        runValidators: true
+    }, (err, usuarioDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            })
+        }
+        if (!usuarioDB) {
+            ok: false,
+            usuarioDB
+        }
+
+        res.status(200).json({
+            ok: true,
+            usuarioDB
+        })
+    })
+
+
 });
 module.exports = app;
