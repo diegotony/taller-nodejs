@@ -60,9 +60,13 @@ app.put('/user/:id', (req, res) => {
     let body = req.body;
 
     let usuarioPorEditar = {
-        nombre: body.nombre,
-        apellido: body.apellido,
-        edad: body.edad
+        name: body.name,
+        lastName: body.lastName,
+        email: body.email,
+        userName: body.userName,
+        password: body.password,
+        age: body.age,
+        rol: body.rol
     }
 
     User.findByIdAndUpdate(id, usuarioPorEditar, {
@@ -89,7 +93,7 @@ app.put('/user/:id', (req, res) => {
     })
 })
 
-app.delete('/user:id', (req, res) => {
+app.delete('/user/:id', (req, res) => {
     let id = req.params.id
     let usarioState = {
         state: false

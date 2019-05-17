@@ -9,6 +9,10 @@ let rolSchema = new Schema({
     description: {
         type: String,
         required: [true, "El nombre debe de ser requerido"]
+    },
+    state: {
+        type: Boolean,
+        default: true
     }
 });
 
