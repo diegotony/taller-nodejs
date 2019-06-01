@@ -16,7 +16,7 @@ app.use(require('./routes/index'));
 // DB config
 
 
-mongoose.connect(process.env.URLDB, {
+mongoose.connect('mongodb://localhost:27017/sga2', {
     useNewUrlParser: true
 }, (err, res) => {
     if (err) throw error;
