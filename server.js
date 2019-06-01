@@ -1,4 +1,4 @@
-require('./config/config');
+require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -16,7 +16,7 @@ app.use(require('./routes/index'));
 // DB config
 
 
-mongoose.connect('mongodb://localhost:27017/sga2', {
+mongoose.connect(process.env.URLDB, {
     useNewUrlParser: true
 }, (err, res) => {
     if (err) throw error;
